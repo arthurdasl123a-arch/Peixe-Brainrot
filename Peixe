@@ -1,0 +1,67 @@
+-- Carregar uma lib de UI (exemplo: OrionLib, Rayfield, etc.)
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
+
+-- Criar Janela
+local Window = OrionLib:MakeWindow({Name = "Peixe Brainrot - Script", HidePremium = false, SaveConfig = true, ConfigFolder = "PeixeConfig"})
+
+-- Variáveis de controle
+getgenv().autoFish = false
+getgenv().autoSell = false
+
+-- Funções genéricas
+function fishLoop()
+    while getgenv().autoFish do
+        task.wait(2) -- tempo entre pescadas
+        -- Aqui entraria a função de "usar vara de pescar"
+        print("RemoveEvent/Function")
+    end
+end
+
+function sellLoop()
+    while getgenv().autoSell do
+        task.wait(5) -- tempo entre vendas
+        -- Aqui entraria a função de "vender inventário"
+        print("💰 RemoveEvent/Function de venda")
+    end
+end
+
+-- Aba de pesca
+local Tab = Window:MakeTab({
+	Name = "Pesca",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+-- Botão Auto Fish
+Tab:AddToggle({
+	Name = "Auto Pescar",
+	Default = false,
+	Callback = function(Value)
+		getgenv().autoFish = Value
+		if Value then
+			task.spawn(fishLoop)
+		end
+	end
+})
+
+-- Botão Auto Sell
+Tab:AddToggle({
+	Name = "Auto Vender",
+	Default = false,
+	Callback = function(Value)
+		getgenv().autoSell = Value
+		if Value then
+			task.spawn(sellLoop)
+		end
+	end
+})
+
+-- Notificação
+OrionLib:MakeNotification({
+	Name = "Ativado!",
+	Content = "Menu carregado com sucesso 😎",
+	Image = "rbxassetid://4483345998",
+	Time = 5
+})
+
+OrionLib:Init()
